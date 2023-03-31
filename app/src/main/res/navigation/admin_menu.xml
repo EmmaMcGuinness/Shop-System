@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_main"
+    app:startDestination="@id/menuHome">
+
+    <fragment
+        android:id="@+id/menuProfile"
+        android:name="com.project.ca4softwaredesign.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/menuOrders"
+        android:name="com.project.ca4softwaredesign.admin.OrdersFragment"
+        android:label="fragment_orders"
+        tools:layout="@layout/fragment_orders"/>
+    <fragment
+        android:id="@+id/menuHome"
+        android:name="com.project.ca4softwaredesign.admin.HomeAdminFragment"
+        android:label="fragment_home_admin"
+        tools:layout="@layout/fragment_home_admin" />
+</navigation>

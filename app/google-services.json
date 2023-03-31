@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "110496409260",
+    "firebase_url": "https://beauboutique-ff7f7-default-rtdb.firebaseio.com",
+    "project_id": "beauboutique-ff7f7",
+    "storage_bucket": "beauboutique-ff7f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110496409260:android:468755e43c6afe5f1b6109",
+        "android_client_info": {
+          "package_name": "com.project.ca4softwaredesign"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110496409260-9jlasipg88uf3vv2pgs34eoqokfc9pmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmlFtN6e_E9MOgIyLpVGVLbH6ELqSqc2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110496409260-9jlasipg88uf3vv2pgs34eoqokfc9pmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
