@@ -10,7 +10,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_picture"
+        android:src="@drawable/picture"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_oval="true"/>
@@ -25,6 +25,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageProfile"/>
 
     <TextView
+        android:id="@+id/nav_header_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
