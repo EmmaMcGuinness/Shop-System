@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class PaymentActivity extends AppCompatActivity {
     Button buyNow;
+    int total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,14 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
 
          List<CartModel> list = (ArrayList<CartModel>)getIntent().getSerializableExtra("itemList");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
 
-         CardForm cardForm = findViewById(R.id.card_form);
+        if(bundle != null){
+            total = bundle.getInt("total");
+        }
+
+        CardForm cardForm = findViewById(R.id.card_form);
          buyNow = findViewById(R.id.btnBuy);
 
          buyNow.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +55,7 @@ public class PaymentActivity extends AppCompatActivity {
                                              Toast.makeText(PaymentActivity.this, "Thank you for your purchase", Toast.LENGTH_LONG).show();
                                              Intent intent = new Intent(PaymentActivity.this, PlacedOrderActivity.class);
                                               intent.putExtra("itemList", (Serializable) list);
+                                              intent.putExtra("total", total);
                                               startActivity(intent);
 
                                          }

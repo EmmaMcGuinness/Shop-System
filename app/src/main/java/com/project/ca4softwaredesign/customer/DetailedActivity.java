@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.project.ca4softwaredesign.Product;
 import com.project.ca4softwaredesign.R;
+import com.project.ca4softwaredesign.admin.DetailedAdminActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,8 +39,9 @@ public class DetailedActivity extends AppCompatActivity {
     ImageView reviewImg;
     int totalQuantity = 0;
     int totalPrice = 1;
-    String productId;
-
+    String productId, category, manufacturer, fPrice, fTitle;
+    int quant = 0;
+    int finalQuant = 0;
 
     Button addToCart;
     ImageView addItem, removeItem;
@@ -85,8 +87,13 @@ public class DetailedActivity extends AppCompatActivity {
             price.setText(product.getPrice());
             title.setText(product.getTitle());
             productId = product.getProductId();
+            quant = product.getQuantity();
+            category = product.getCategory();
+            manufacturer = product.getManufacturer();
 
         }
+        fPrice = String.valueOf(product.getPrice());
+        fTitle = String.valueOf(product.getTitle());
 
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +120,7 @@ public class DetailedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 totalPrice = Integer.parseInt(product.getPrice())*totalQuantity;
                 addedToCart();
+                updateQuantity();
             }
 
 
@@ -199,6 +207,21 @@ public class DetailedActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(DetailedActivity.this, "Item added to Cart", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void updateQuantity() {
+        finalQuant = quant - totalQuantity;
+
+        Product product = new Product(fTitle, category, manufacturer, fPrice, finalQuant);
+
+        databaseReference.child(productId).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    finish();
+                }
+
             }
         });
     }

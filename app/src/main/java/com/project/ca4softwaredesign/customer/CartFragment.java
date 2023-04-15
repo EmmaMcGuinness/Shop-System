@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +38,8 @@ public class CartFragment extends Fragment {
     CartAdapter cartAdapter;
     List<CartModel> cartModelList;
     Button payNow;
+    ImageView delete;
+    int total;
 
     TextView overTotalAmount;
     String userID;
@@ -59,6 +62,7 @@ public class CartFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         cartModelList = new ArrayList<>();
         cartAdapter = new CartAdapter(getActivity(), cartModelList);
@@ -95,6 +99,7 @@ public class CartFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PaymentActivity.class );
                 intent.putExtra("itemList", (Serializable) cartModelList);
+                intent.putExtra("total", total);
                 startActivity(intent);
             }
         });
@@ -104,7 +109,7 @@ public class CartFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            int total = intent.getIntExtra("totalAmount", 0);
+            total = intent.getIntExtra("totalAmount", 0);
             overTotalAmount.setText("Total Price: €" + total);
 
         }

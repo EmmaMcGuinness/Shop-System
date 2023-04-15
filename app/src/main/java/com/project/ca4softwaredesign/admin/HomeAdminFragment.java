@@ -53,7 +53,8 @@ public class HomeAdminFragment extends Fragment {
     private StorageTask uploadTask;
     private StorageReference storagePicRef;
 
-    ProductAdapter productAdapter;
+    ProductAdminAdapter productAdminAdapter;
+
     private final ArrayList<Product> productList = new ArrayList<>();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -140,7 +141,7 @@ public class HomeAdminFragment extends Fragment {
                 }
             }
         }
-        productAdapter.searchDataList(searchList);
+        productAdminAdapter.searchDataList(searchList);
     }
 
     private void addProduct() {
@@ -169,6 +170,7 @@ public class HomeAdminFragment extends Fragment {
         sManufacturer.setAdapter(adapter2);
 
         EditText editPrice = myView.findViewById(R.id.editTextPrice);
+        EditText editQuantity = myView.findViewById(R.id.editTextQuantity);
         Button save = myView.findViewById(R.id.save_button);
         Button cancel = myView.findViewById(R.id.cancel_button);
 
@@ -209,6 +211,7 @@ public class HomeAdminFragment extends Fragment {
             public void onClick(View view) {
                 String title = editTitle.getText().toString().trim();
                 String price = editPrice.getText().toString().trim();
+                int quantity = Integer.parseInt(editQuantity.getText().toString());
 
                 if (title.isEmpty()) {
                     editTitle.setError("Title is required");
@@ -230,10 +233,16 @@ public class HomeAdminFragment extends Fragment {
                     editPrice.requestFocus();
                     return;
                 }
+                if (quantity == 0) {
+                    editQuantity.setError("Quantity is required");
+                    editQuantity.requestFocus();
+                    return;
+                }
+
                 uploadImage();
 
 
-                Product product = new Product(title, category, manufacturer, price);
+                Product product = new Product(title, category, manufacturer, price, quantity);
                 FirebaseDatabase.getInstance().getReference("Products").push()
                         .setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -273,14 +282,16 @@ public class HomeAdminFragment extends Fragment {
                     final String getCategory = events.child("category").getValue(String.class);
                     final String getManufacturer = events.child("manufacturer").getValue(String.class);
                     final String getPrice = events.child("price").getValue(String.class);
+                    final String getProductId = events.getKey();
+                    final int getQuantity = events.child("quantity").getValue(Integer.class);
 
-                    Product product = new Product(getTitle, getCategory, getManufacturer, getPrice);
+                    Product product = new Product(getTitle, getCategory, getManufacturer, getPrice, getProductId, getQuantity);
 
                     productList.add(product);
 
                 }
-                productAdapter = new ProductAdapter(getActivity(), productList);
-                recyclerView.setAdapter(productAdapter);
+                productAdminAdapter = new ProductAdminAdapter(getActivity(), productList);
+                recyclerView.setAdapter(productAdminAdapter);
             }
 
             @Override

@@ -43,6 +43,7 @@
             android:parentActivityName=".HomeCustomer" />
         <activity android:name=".customer.PlacedOrderActivity" />
         <activity android:name=".customer.PaymentActivity" />
+        <activity android:name=".admin.DetailedAdminActivity"/>
     </application>
 
 </manifest>
