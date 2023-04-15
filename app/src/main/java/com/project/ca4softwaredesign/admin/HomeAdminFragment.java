@@ -151,21 +151,23 @@ public class HomeAdminFragment extends Fragment {
 
         storagePicRef = FirebaseStorage.getInstance().getReference().child("Product pic");
 
-
         AlertDialog dialog = myDialog.create();
         dialog.setCancelable(false);
         dialog.show();
 
         image = myView.findViewById(R.id.imageView);
         EditText editTitle = myView.findViewById(R.id.editTextTitle);
+
         Spinner sCategory = myView.findViewById(R.id.categorySpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.category, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sCategory.setAdapter(adapter);
+
         Spinner sManufacturer = myView.findViewById(R.id.manufacturerSpinner);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.manufacturer, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sManufacturer.setAdapter(adapter2);
+
         EditText editPrice = myView.findViewById(R.id.editTextPrice);
         Button save = myView.findViewById(R.id.save_button);
         Button cancel = myView.findViewById(R.id.cancel_button);

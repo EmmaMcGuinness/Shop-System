@@ -13,15 +13,9 @@
         android:theme="@style/Theme.CA4SoftwareDesign"
         tools:targetApi="31">
         <activity
-            android:name=".customer.PaymentActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name="customer.PlacedOrderActivity"
-            android:exported="false">
+            android:name=".customer.ReviewActivity"
+            android:exported="false"
+            android:parentActivityName=".customer.DetailedActivity" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -44,9 +38,11 @@
         <activity android:name=".ForgotPassword" />
         <activity android:name=".HomeAdmin" />
         <activity android:name=".HomeCustomer" />
-        <activity android:name=".customer.DetailedActivity" />
+        <activity
+            android:name=".customer.DetailedActivity"
+            android:parentActivityName=".HomeCustomer" />
         <activity android:name=".customer.PlacedOrderActivity" />
-        <activity android:name=".customer.PaymentActivity"/>
+        <activity android:name=".customer.PaymentActivity" />
     </application>
 
 </manifest>

@@ -7,12 +7,21 @@ public class Product implements Serializable {
     String category;
     String manufacturer;
     String price;
+    String productId;
 
+    public Product(String title, String category, String manufacturer, String price, String productId){
+        this.title = title;
+        this.category = category;
+        this.manufacturer = manufacturer;
+        this.price = price;
+        this.productId = productId;
+    }
     public Product(String title, String category, String manufacturer, String price){
         this.title = title;
         this.category = category;
         this.manufacturer = manufacturer;
         this.price = price;
+        this.productId = productId;
     }
 
     public String getTitle() {
@@ -45,5 +54,13 @@ public class Product implements Serializable {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

@@ -1,5 +1,6 @@
 package com.project.ca4softwaredesign.customer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,22 +17,28 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.project.ca4softwaredesign.Product;
 import com.project.ca4softwaredesign.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
 public class DetailedActivity extends AppCompatActivity {
 
     ImageView detailImg;
-    TextView price, rating, title, quantity;
+    TextView price, reviewText, title, quantity;
+    ImageView reviewImg;
     int totalQuantity = 0;
     int totalPrice = 1;
+    String productId;
 
 
     Button addToCart;
@@ -43,6 +50,8 @@ public class DetailedActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private final ArrayList<ReviewModel> ratingList = new ArrayList<>();
+
 
 
 
@@ -67,13 +76,15 @@ public class DetailedActivity extends AppCompatActivity {
         removeItem = findViewById(R.id.remove_item);
         addToCart = findViewById(R.id.add_To_Cart);
         price = findViewById(R.id.detailed_price);
-        rating = findViewById(R.id.detailed_rating);
+        reviewText = findViewById(R.id.textViewReview);
+        reviewImg = findViewById(R.id.imageReview);
         title = findViewById(R.id.detail_name);
         quantity = findViewById(R.id.quantity);
 
         if(product != null){
             price.setText(product.getPrice());
             title.setText(product.getTitle());
+            productId = product.getProductId();
 
         }
 
@@ -107,11 +118,70 @@ public class DetailedActivity extends AppCompatActivity {
 
         });
 
+        reviewImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailedActivity.this, ReviewActivity.class);
+                i.putExtra("ProductId", productId);
+                startActivity(i);
+
+            }
+        });
+
+        rating();
+
 
 
 
 
     }
+
+    private void rating() {
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                ratingList.clear();
+
+
+                for (DataSnapshot events : snapshot.child("Reviews").getChildren()) {
+                    final String getReview = events.child("review").getValue(String.class);
+                    final String getRating = events.child("rating").getValue(String.class);
+                    final String getUserPhone = events.child("userPhone").getValue(String.class);
+                    final String getProductId = events.child("productId").getValue(String.class);
+
+                    ReviewModel reviewModel = new ReviewModel(getReview, getRating, getUserPhone, getProductId);
+
+                    ratingList.add(reviewModel);
+
+                }
+                calculateRating();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+    private void calculateRating() {
+        double sum=0.0, number=0.0;
+        for (int i =0; i < ratingList.size(); i+= 1){
+            double rating = Double.parseDouble(ratingList.get(i).getRating());
+
+            number = number+ rating;
+            sum = number/ratingList.size();
+        }
+        reviewText.setText(String.valueOf(sum));
+    }
+
+
     private void addedToCart() {
 
         final HashMap<String, Object> cartMap = new HashMap<>();
@@ -120,6 +190,7 @@ public class DetailedActivity extends AppCompatActivity {
         cartMap.put("productPrice", price.getText().toString());
         cartMap.put("totalQuantity", quantity.getText().toString());
         cartMap.put("totalPrice", totalPrice);
+        cartMap.put("productId", productId);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
