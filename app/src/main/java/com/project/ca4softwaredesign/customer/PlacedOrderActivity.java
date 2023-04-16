@@ -27,6 +27,7 @@ public class PlacedOrderActivity extends AppCompatActivity {
     String userID;
     FirebaseUser user;
     int total;
+    String sTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,12 @@ public class PlacedOrderActivity extends AppCompatActivity {
         if(bundle != null){
             total = bundle.getInt("total");
         }
+        sTotal = String.valueOf(total);
 
         if(list != null && list.size() > 0){
                 final HashMap<String, Object> cartMap = new HashMap<>();
 
-                cartMap.put("totalPrice", total);
+                cartMap.put("totalPrice", sTotal);
                 cartMap.put("userId", userID);
 
                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").push();

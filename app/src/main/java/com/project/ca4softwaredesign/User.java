@@ -1,7 +1,7 @@
 package com.project.ca4softwaredesign;
 
 public class User {
-    public String name, password, email, phoneNumber, admin;
+    public String name, password, email, phoneNumber, address, admin;
 
 
     public User(){
@@ -9,11 +9,12 @@ public class User {
     }
 
 
-    public User(String name, String password, String email, String phoneNumber, String admin){
+    public User(String name, String password, String email, String phoneNumber,String address, String admin){
         this.name = name;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.address = address;
         this.admin = admin;
 
     }

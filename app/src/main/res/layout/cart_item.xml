@@ -109,6 +109,5 @@
             android:src="@drawable/ic_baseline_delete_24"/>
 
 
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

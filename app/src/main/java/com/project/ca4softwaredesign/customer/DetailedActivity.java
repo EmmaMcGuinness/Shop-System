@@ -2,6 +2,7 @@ package com.project.ca4softwaredesign.customer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -215,7 +216,7 @@ public class DetailedActivity extends AppCompatActivity {
 
         Product product = new Product(fTitle, category, manufacturer, fPrice, finalQuant);
 
-        databaseReference.child(productId).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+        databaseReference.child("Products").child(productId).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
@@ -224,5 +225,12 @@ public class DetailedActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

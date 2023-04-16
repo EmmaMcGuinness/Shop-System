@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegisterUser extends AppCompatActivity {
 
     private TextView banner, registerUser;
-    private EditText editTextName, editTextPhoneNumber, editTextEmail, editTextPassword;
+    private EditText editTextName, editTextPhoneNumber, editTextEmail, editTextPassword, editTextAddress;
     private CheckBox checkBoxAdmin;
 
 
@@ -34,6 +34,7 @@ public class RegisterUser extends AppCompatActivity {
         setContentView(R.layout.activity_register_user);
         editTextName = (EditText) findViewById(R.id.name);
         editTextPhoneNumber = (EditText) findViewById(R.id.phoneNumber);
+        editTextAddress = (EditText) findViewById(R.id.address);
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
         checkBoxAdmin = (CheckBox) findViewById(R.id.admin);
@@ -63,6 +64,7 @@ public class RegisterUser extends AppCompatActivity {
                 String password = editTextPassword.getText().toString().trim();
                 String name = editTextName.getText().toString().trim();
                 String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+                String address = editTextAddress.getText().toString().trim();
                 String admin;
                 String a = "admin";
                 String u = "user";
@@ -79,6 +81,11 @@ public class RegisterUser extends AppCompatActivity {
                 if (phoneNumber.isEmpty()) {
                     editTextPhoneNumber.setError("Phone number is required");
                     editTextPhoneNumber.requestFocus();
+                    return;
+                }
+                if (address.isEmpty()) {
+                    editTextAddress.setError("Address is required");
+                    editTextAddress.requestFocus();
                     return;
                 }
 
@@ -114,7 +121,7 @@ public class RegisterUser extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
 
-                                        User user = new User(name, password, email, phoneNumber, admin);
+                                        User user = new User(name, password, address, email, phoneNumber, admin);
 
                                         FirebaseDatabase.getInstance().getReference("Users")
                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -24,15 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                    android:text="Order ID:"
+                    android:text="Product Name:"
                 android:textSize="16sp"/>
             <TextView
-                android:id="@+id/orderIdTextView"
+                android:id="@+id/productNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:text="orderID"
+                android:text="product name"
                 android:textSize="16sp"/>
 
         </LinearLayout>
@@ -47,40 +47,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="User ID:"
+                android:text="Quantity:"
                 android:textSize="16sp"/>
             <TextView
-                android:id="@+id/userIdTextView"
+                android:id="@+id/quantityTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:text="userID"
+                android:text="quantity"
                 android:textSize="16sp"/>
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Total:"
-                android:textSize="16sp"/>
-            <TextView
-                android:id="@+id/totalTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="total"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
 
 
     </LinearLayout>
