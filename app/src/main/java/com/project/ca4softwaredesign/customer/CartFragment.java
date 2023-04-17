@@ -105,7 +105,7 @@ public class CartFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PaymentActivity.class );
                 intent.putExtra("itemList", (Serializable) cartModelList);
-                intent.putExtra("total", finalTotal);
+                intent.putExtra("total", total);
                 startActivity(intent);
             }
         });
@@ -127,11 +127,7 @@ public class CartFragment extends Fragment {
 
             total = intent.getDoubleExtra("totalAmount", 0);
 
-            finalTotal = total;
-
-
-
-            overTotalAmount.setText("Total Price: €" + finalTotal);
+            overTotalAmount.setText("Total Price: €" + total);
 
         }
     };

@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileFragment extends Fragment {
 
-    TextView profileName, profileRole, profileAddress, profileEmail, profilePassword;
+    TextView profileName, profileRole, profileAddress, profileEmail, profilePassword, profilePhone;
     Button logout;
     private FirebaseUser user;
     private String userID;
@@ -37,6 +37,7 @@ public class ProfileFragment extends Fragment {
         profileRole = view.findViewById(R.id.role);
         profileAddress = view.findViewById(R.id.address);
         profileEmail = view.findViewById(R.id.email);
+        profilePhone = view.findViewById(R.id.phone);
         profilePassword = view.findViewById(R.id.password);
         logout = view.findViewById(R.id.logOut);
 
@@ -52,6 +53,8 @@ public class ProfileFragment extends Fragment {
                 profileName.setText(userObj.getName());
                 profileRole.setText(userObj.getAdmin());
                 profileEmail.setText(userObj.getEmail());
+                profilePhone.setText(userObj.getPhoneNumber());
+                profileAddress.setText(userObj.getAddress());
                 profilePassword.setText(userObj.getPassword());
 
             }

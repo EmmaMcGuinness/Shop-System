@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +41,7 @@ public class DetailedActivity extends AppCompatActivity {
     ImageView reviewImg;
     double totalQuantity = 0;
     double totalPrice = 1;
-    String productId, category, manufacturer, fPrice, fTitle;
+    String productId, category, manufacturer, fPrice, fTitle, detailImage;
     int quant = 0;
     int finalQuant = 0;
 
@@ -68,6 +69,8 @@ public class DetailedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Glide.with(this);
+
         final Object object = getIntent().getSerializableExtra("detail");
         if(object instanceof Product){
             product = (Product) object;
@@ -91,15 +94,21 @@ public class DetailedActivity extends AppCompatActivity {
             quant = product.getQuantity();
             category = product.getCategory();
             manufacturer = product.getManufacturer();
+            detailImage = product.getImageUrl();
 
         }
         fPrice = String.valueOf(product.getPrice());
         fTitle = String.valueOf(product.getTitle());
 
+        Glide.with(DetailedActivity.this)
+                .load(detailImage)
+                .override(2400, 800)
+                .into(detailImg);
+
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(totalQuantity < 10){
+                if(totalQuantity < 10.0){
                     totalQuantity++;
                     quantity.setText(String.valueOf(totalQuantity));
                 }
@@ -109,7 +118,7 @@ public class DetailedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(totalQuantity > 1){
+                if(totalQuantity > 1.0){
                     totalQuantity--;
                     quantity.setText(String.valueOf(totalQuantity));
                 }
@@ -121,7 +130,7 @@ public class DetailedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 totalPrice = Double.parseDouble(product.getPrice())*totalQuantity;
                 addedToCart();
-                updateQuantity();
+               // updateQuantity();
             }
 
 
@@ -163,7 +172,9 @@ public class DetailedActivity extends AppCompatActivity {
 
                     ReviewModel reviewModel = new ReviewModel(getReview, getRating, getUserPhone, getProductId);
 
-                    ratingList.add(reviewModel);
+                    if(getProductId.equals(productId)) {
+                        ratingList.add(reviewModel);
+                    }
 
                 }
                 calculateRating();
@@ -211,7 +222,7 @@ public class DetailedActivity extends AppCompatActivity {
             }
         });
     }
-    private void updateQuantity() {
+    /* private void updateQuantity() {
         finalQuant = (int) (quant - totalQuantity);
 
         Product product = new Product(fTitle, category, manufacturer, fPrice, finalQuant);
@@ -225,7 +236,7 @@ public class DetailedActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

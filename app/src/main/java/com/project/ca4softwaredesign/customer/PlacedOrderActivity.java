@@ -26,7 +26,7 @@ public class PlacedOrderActivity extends AppCompatActivity {
     FirebaseAuth auth;
     String userID;
     FirebaseUser user;
-    int total;
+    double total;
     String sTotal;
 
     @Override
@@ -42,7 +42,7 @@ public class PlacedOrderActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         if(bundle != null){
-            total = bundle.getInt("total");
+            total = bundle.getDouble("total");
         }
         sTotal = String.valueOf(total);
 

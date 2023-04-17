@@ -84,8 +84,10 @@ public class HomeCustomerFragment extends Fragment {
                     final String getPrice = events.child("price").getValue(String.class);
                     final String getId = events.getKey();
                     final int getQuantity = events.child("quantity").getValue(Integer.class);
+                    final String imageUrl = events.child("imageUrl").getValue(String.class);
 
-                    Product product = new Product(getTitle, getCategory, getManufacturer, getPrice, getId, getQuantity);
+
+                    Product product = new Product(getTitle, getCategory, getManufacturer, getPrice, getId, getQuantity, imageUrl);
 
                     productList.add(product);
 

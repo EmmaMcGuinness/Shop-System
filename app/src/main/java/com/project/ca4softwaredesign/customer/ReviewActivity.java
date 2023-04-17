@@ -176,8 +176,9 @@ public class ReviewActivity extends AppCompatActivity {
 
                     ReviewModel reviewModel = new ReviewModel(getReview, getRating, getUserPhone, getProductId);
 
-                    reviewList.add(reviewModel);
-
+                    if(getProductId.equals(productId)) {
+                        reviewList.add(reviewModel);
+                    }
                 }
                 reviewAdapter = new ReviewAdapter(ReviewActivity.this, reviewList);
                 recyclerView.setAdapter(reviewAdapter);

@@ -27,6 +27,11 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,7 +54,6 @@ public class HomeAdminFragment extends Fragment {
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     String category, manufacturer, filter, imageUrl;
-    ImageView image;
     SearchView searchView;
     Spinner sFilter;
 
@@ -74,6 +78,8 @@ public class HomeAdminFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_admin, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+
+        Glide.with(this);
 
         searchView = view.findViewById(R.id.search);
         search();
@@ -173,7 +179,6 @@ public class HomeAdminFragment extends Fragment {
         dialog.setCancelable(false);
         dialog.show();
 
-        image = myView.findViewById(R.id.imageView);
         EditText editTitle = myView.findViewById(R.id.editTextTitle);
 
         Spinner sCategory = myView.findViewById(R.id.categorySpinner);
@@ -330,8 +335,9 @@ public class HomeAdminFragment extends Fragment {
                     final String getPrice = events.child("price").getValue(String.class);
                     final String getProductId = events.getKey();
                     final int getQuantity = events.child("quantity").getValue(Integer.class);
+                    final String imageUrl = events.child("imageUrl").getValue(String.class);
 
-                    Product product = new Product(getTitle, getCategory, getManufacturer, getPrice, getProductId, getQuantity);
+                    Product product = new Product(getTitle, getCategory, getManufacturer, getPrice, getProductId, getQuantity, imageUrl);
 
                     productList.add(product);
 

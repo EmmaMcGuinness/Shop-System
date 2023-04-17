@@ -21,7 +21,7 @@ import java.util.List;
 
 public class PaymentActivity extends AppCompatActivity {
     Button buyNow;
-    int total;
+    double total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class PaymentActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         if(bundle != null){
-            total = bundle.getInt("total");
+            total = bundle.getDouble("total");
         }
 
         CardForm cardForm = findViewById(R.id.card_form);

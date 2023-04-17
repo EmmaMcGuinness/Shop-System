@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,8 +35,9 @@ import java.util.HashMap;
 public class DetailedAdminActivity extends AppCompatActivity {
 
     ImageView detailImg;
+    String detailImage;
     TextView price, reviewText, title, quantity;
-    ImageView reviewImg;
+    ImageView reviewImg, deleteImageView;
     int totalQuantity = 0;
     int totalPrice = 1;
     int quant = 0;
@@ -64,6 +66,8 @@ public class DetailedAdminActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Glide.with(this);
+
         final Object object = getIntent().getSerializableExtra("detail");
         if(object instanceof Product){
             product = (Product) object;
@@ -77,6 +81,7 @@ public class DetailedAdminActivity extends AppCompatActivity {
         price = findViewById(R.id.detailed_price);
         title = findViewById(R.id.detail_name);
         quantity = findViewById(R.id.quantity);
+        deleteImageView = findViewById(R.id.deleteImageView);
 
         if(product != null){
             price.setText(product.getPrice());
@@ -85,12 +90,16 @@ public class DetailedAdminActivity extends AppCompatActivity {
             quantity.setText(String.valueOf(product.getQuantity()));
             category = product.getCategory();
             manufacturer = product.getManufacturer();
-
+            detailImage = product.getImageUrl();
         }
         fPrice = String.valueOf(product.getPrice());
         fTitle = String.valueOf(product.getTitle());
         quant = Integer.parseInt(String.valueOf(product.getQuantity()));
 
+        Glide.with(DetailedAdminActivity.this)
+                .load(detailImage)
+                .override(2400, 800)
+                .into(detailImg);
 
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +128,24 @@ public class DetailedAdminActivity extends AppCompatActivity {
             }
 
         });
+
+        deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference fireDB = FirebaseDatabase.getInstance().getReference("Products");
+                fireDB.child(productId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(DetailedAdminActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                });
+            }
+        });
+
+
 
     }
 

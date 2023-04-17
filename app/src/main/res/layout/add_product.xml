@@ -16,21 +16,13 @@
         android:background="@color/beige"
         android:layout_gravity="center"
         android:padding="10dp"
+        android:textColor="@color/white"
         android:text="Add a new Product"
         android:textSize="20sp"
         android:textStyle="bold" />
 
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="Picture"
-            app:layout_constraintBottom_toTopOf="@+id/change_image_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="ImageContrastCheck"
-            android:src="@drawable/picture" />
+
 
         <Button
             android:id="@+id/change_image_btn"
