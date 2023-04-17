@@ -27,7 +27,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     Context context;
     List<CartModel> cartModelList;
-    int totalPrice = 0;
+    double totalPrice = 0;
     String userID;
     FirebaseUser user;
     FirebaseAuth auth;
@@ -48,7 +48,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         holder.name.setText(cartModelList.get(position).getProductName());
         holder.price.setText(cartModelList.get(position).getProductPrice());
-        holder.quantity.setText(cartModelList.get(position).getTotalQuantity());
+        holder.quantity.setText(cartModelList.get(position).getTotalQuantity().trim());
         holder.totalPrice.setText(String.valueOf(cartModelList.get(position).getTotalPrice()));
 
         holder.delete.setOnClickListener(new View.OnClickListener() {

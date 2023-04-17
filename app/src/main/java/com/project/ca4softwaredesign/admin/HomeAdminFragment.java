@@ -1,14 +1,20 @@
 package com.project.ca4softwaredesign.admin;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,8 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.project.ca4softwaredesign.Product;
-import com.project.ca4softwaredesign.ProductAdapter;
 import com.project.ca4softwaredesign.R;
 
 import java.util.ArrayList;
@@ -43,20 +48,20 @@ public class HomeAdminFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    String category, manufacturer, filter;
+    String category, manufacturer, filter, imageUrl;
     ImageView image;
-    TextView changeImageBtn;
     SearchView searchView;
     Spinner sFilter;
-    private Uri imageUri;
-    private String myUri = "";
+
     private StorageTask uploadTask;
-    private StorageReference storagePicRef;
+    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    StorageReference storagePicRef = firebaseStorage.getReference().child("images/products/product.jpg");
 
     ProductAdminAdapter productAdminAdapter;
 
     private final ArrayList<Product> productList = new ArrayList<>();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private ActivityResultLauncher<Intent> launcher;
 
     public HomeAdminFragment() {
         // Required empty public constructor
@@ -102,6 +107,18 @@ public class HomeAdminFragment extends Fragment {
             }
 
         });
+
+         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            Uri selectedImage = data.getData();
+                            uploadImage(selectedImage, storagePicRef);
+
+                        }
+                    }
+                });
 
 
         return view;
@@ -171,6 +188,8 @@ public class HomeAdminFragment extends Fragment {
 
         EditText editPrice = myView.findViewById(R.id.editTextPrice);
         EditText editQuantity = myView.findViewById(R.id.editTextQuantity);
+
+        Button changeImage = myView.findViewById(R.id.change_image_btn);
         Button save = myView.findViewById(R.id.save_button);
         Button cancel = myView.findViewById(R.id.cancel_button);
 
@@ -194,6 +213,15 @@ public class HomeAdminFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                launcher.launch(intent);
             }
         });
 
@@ -239,10 +267,9 @@ public class HomeAdminFragment extends Fragment {
                     return;
                 }
 
-                uploadImage();
 
 
-                Product product = new Product(title, category, manufacturer, price, quantity);
+                Product product = new Product(title, category, manufacturer, price, quantity, imageUrl);
                 FirebaseDatabase.getInstance().getReference("Products").push()
                         .setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -264,9 +291,28 @@ public class HomeAdminFragment extends Fragment {
         });
     }
 
-    private void uploadImage() {
+    private void getImage() {
 
     }
+
+    private void uploadImage(Uri selectedImage, StorageReference storagePicRef) {
+        StorageReference imageRef = storagePicRef.child(selectedImage.getLastPathSegment());
+
+
+        UploadTask uploadTask = imageRef.putFile(selectedImage);
+
+        uploadTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                imageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                    imageUrl = downloadUri.toString();
+                    Toast.makeText(getActivity(), "Image added", Toast.LENGTH_SHORT ).show();
+                });
+            } else {
+
+            }
+        });
+    }
+
 
     private void addProductsToRecycler() {
 

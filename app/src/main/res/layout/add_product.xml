@@ -32,7 +32,7 @@
             tools:ignore="ImageContrastCheck"
             android:src="@drawable/picture" />
 
-        <TextView
+        <Button
             android:id="@+id/change_image_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

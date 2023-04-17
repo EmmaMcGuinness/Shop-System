@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,9 +40,12 @@ public class CartFragment extends Fragment {
     List<CartModel> cartModelList;
     Button payNow;
     ImageView delete;
-    int total;
+    Button enter;
+    double total, finalTotal, code= 0;
 
     TextView overTotalAmount;
+    EditText discount;
+    String discountCode = "";
     String userID;
     FirebaseUser user;
 
@@ -67,9 +71,11 @@ public class CartFragment extends Fragment {
         cartModelList = new ArrayList<>();
         cartAdapter = new CartAdapter(getActivity(), cartModelList);
         recyclerView.setAdapter(cartAdapter);
-
+        discount = view.findViewById(R.id.discountEditText);
         overTotalAmount = view.findViewById(R.id.textView);
         payNow = view.findViewById(R.id.pay_now);
+        enter = view.findViewById(R.id.enterButton);
+
 
         LocalBroadcastManager.getInstance(getActivity())
                 .registerReceiver(mMessageReciever, new IntentFilter("TotalAmount"));
@@ -99,18 +105,33 @@ public class CartFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PaymentActivity.class );
                 intent.putExtra("itemList", (Serializable) cartModelList);
-                intent.putExtra("total", total);
+                intent.putExtra("total", finalTotal);
                 startActivity(intent);
             }
         });
+
+        enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discountCode = discount.getText().toString().trim();
+            }
+        });
+
+
+
         return view;
     }
     public BroadcastReceiver mMessageReciever = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            total = intent.getIntExtra("totalAmount", 0);
-            overTotalAmount.setText("Total Price: €" + total);
+            total = intent.getDoubleExtra("totalAmount", 0);
+
+            finalTotal = total;
+
+
+
+            overTotalAmount.setText("Total Price: €" + finalTotal);
 
         }
     };

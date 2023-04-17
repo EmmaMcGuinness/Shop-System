@@ -38,8 +38,8 @@ public class DetailedActivity extends AppCompatActivity {
     ImageView detailImg;
     TextView price, reviewText, title, quantity;
     ImageView reviewImg;
-    int totalQuantity = 0;
-    int totalPrice = 1;
+    double totalQuantity = 0;
+    double totalPrice = 1;
     String productId, category, manufacturer, fPrice, fTitle;
     int quant = 0;
     int finalQuant = 0;
@@ -119,7 +119,7 @@ public class DetailedActivity extends AppCompatActivity {
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalPrice = Integer.parseInt(product.getPrice())*totalQuantity;
+                totalPrice = Double.parseDouble(product.getPrice())*totalQuantity;
                 addedToCart();
                 updateQuantity();
             }
@@ -212,7 +212,7 @@ public class DetailedActivity extends AppCompatActivity {
         });
     }
     private void updateQuantity() {
-        finalQuant = quant - totalQuantity;
+        finalQuant = (int) (quant - totalQuantity);
 
         Product product = new Product(fTitle, category, manufacturer, fPrice, finalQuant);
 

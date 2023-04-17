@@ -7,13 +7,13 @@ public class CartModel implements Serializable {
     String productName;
     String productPrice;
     String totalQuantity;
-    int totalPrice;
+    double totalPrice;
     String productId;
 
     public CartModel() {
     }
 
-    public CartModel(String productName, String productPrice, String totalQuantity, int totalPrice) {
+    public CartModel(String productName, String productPrice, String totalQuantity, double totalPrice) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.totalQuantity = totalQuantity;
@@ -52,8 +52,7 @@ public class CartModel implements Serializable {
         this.totalQuantity = totalQuantity;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
+    public double getTotalPrice() {return totalPrice;
     }
 
     public void setTotalPrice(int totalPrice) {
